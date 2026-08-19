@@ -4,6 +4,10 @@
 ![High Availability](https://img.shields.io/badge/High_Availability-Tested-success)
 ![Shared Storage](https://img.shields.io/badge/Shared_Storage-TrueNAS-0095D5?logo=truenas&logoColor=white)
 ![Validation](https://img.shields.io/badge/Real_Cluster_Evidence-Published-success)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Consolato_Malara-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/consolatomalara/)
+
+**Author:** Consolato Malara  
+**Professional profile:** [LinkedIn](https://www.linkedin.com/in/consolatomalara/)
 
 A hands-on three-node Proxmox VE homelab built to study clustering, shared storage, live migration, High Availability (HA), Linux services, networking, monitoring, automation and Windows infrastructure.
 
