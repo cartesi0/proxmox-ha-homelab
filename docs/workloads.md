@@ -17,14 +17,14 @@ This page documents the virtual machines and containers currently visible in the
 | 107 | `n8n` | LXC container | Workflow automation lab |
 | 108 | `pihole-ct` | LXC container | DNS filtering / Pi-hole service |
 | 110 | `telegram-corner` | LXC container | Telegram automation / bot workload |
-| 111 | `VPNWireguard` | LXC container | WireGuard VPN for secure remote access to the homelab |
+| 111 | `VPNWireguard` | LXC container | WireGuard-based remote access to the homelab |
 | 101 | `pfsense` | Virtual machine | Firewall and network segmentation lab |
 | 102 | `Homelab` | Virtual machine | General-purpose lab workload |
 | 103 | `Fatture` | Virtual machine | Existing application workload; detailed role to be documented later |
 | 104 | `Windows10client` | Virtual machine | Windows client testing |
 | 105 | `SMM` | Virtual machine | Existing application workload; detailed role to be documented later |
 | 106 | `Zabbix` | Virtual machine | Infrastructure monitoring lab |
-| 109 | `Ubuntu` | Ubuntu workload | Linux testing / general-purpose lab workload |
+| 109 | `Ubuntu` | Virtual machine | Linux testing / general-purpose lab workload |
 
 ### Node `pve2`
 
@@ -53,9 +53,7 @@ Topics covered or planned around this service include:
 
 ### WireGuard remote-access VPN
 
-`VPNWireguard` provides remote access to the homelab.
-
-The VPN project is especially relevant because it combines several infrastructure topics:
+`VPNWireguard` provides remote access to the homelab and is used to practice several infrastructure topics:
 
 - Linux networking
 - WireGuard peer configuration
@@ -64,11 +62,11 @@ The VPN project is especially relevant because it combines several infrastructur
 - Remote administration
 - Security boundaries between the lab and other networks
 
-The objective is to manage the Proxmox environment remotely without exposing the Proxmox management interface directly to the public Internet.
+The design goal is to manage the Proxmox environment remotely without exposing the Proxmox management interface directly to the public Internet.
 
 ### Zabbix monitoring
 
-`Zabbix` is used as the monitoring platform for Linux and infrastructure services.
+`Zabbix` is used as a monitoring lab for Linux and infrastructure services.
 
 The monitoring roadmap includes:
 
@@ -82,7 +80,7 @@ The monitoring roadmap includes:
 
 ### Telegram automation
 
-`telegram-corner` hosts Telegram automation used in personal lab projects. It provides practical experience with Linux services, Python applications, service management and troubleshooting.
+`telegram-corner` hosts Telegram automation used in personal lab projects. It provides hands-on practice with Linux services, Python applications, service management and troubleshooting.
 
 ### n8n automation
 
@@ -90,7 +88,7 @@ The `n8n` container is intended for workflow automation experiments and future i
 
 ### pfSense networking lab
 
-The `pfsense` VM is part of the networking and security roadmap. Planned use includes firewall policy testing, network isolation and segmentation experiments.
+The `pfsense` VM is part of the networking and security learning roadmap. Planned use includes firewall policy testing, network isolation and segmentation experiments.
 
 ## Windows infrastructure project
 
@@ -136,11 +134,11 @@ Planned additions to the homelab include:
 2. **Network segmentation** — isolate lab services and management traffic.
 3. **Monitoring expansion** — Zabbix dashboards and alerting for cluster services.
 4. **Backup and disaster recovery** — restore testing for VMs and services.
-5. **Infrastructure automation** — Terraform / Ansible experiments where they add real value.
+5. **Infrastructure automation fundamentals** — automation experiments after the underlying manual tasks are understood.
 6. **VMware nested lab** — future comparison with vSphere / vCenter concepts when hardware resources allow it.
 
 ## Why this inventory matters
 
-The homelab is not built around a single technology. It is designed as a small infrastructure environment where virtualization, Linux, Windows, networking, monitoring and automation can interact.
+The homelab is not built around a single technology. It is a learning environment where virtualization, Linux, Windows, networking, monitoring and automation can interact.
 
 The goal is to document not only successful configurations, but also troubleshooting, failure scenarios and the reasoning behind infrastructure decisions.
