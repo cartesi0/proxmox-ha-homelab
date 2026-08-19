@@ -2,24 +2,30 @@
 
 ## Overview
 
-This homelab is designed to study virtualization, clustering, shared storage, high availability and infrastructure troubleshooting using Proxmox VE.
+The homelab is built around a three-node Proxmox VE cluster with shared storage provided by TrueNAS. The design is intentionally simple enough to understand while still exposing real virtualization concepts such as quorum, migration and HA recovery.
 
-The environment consists of three Proxmox VE nodes connected to shared storage provided by TrueNAS.
+<p align="center">
+  <img src="../assets/architecture-overview.svg" alt="Proxmox HA Homelab Architecture" width="900">
+</p>
 
-## Architecture Diagram
+## Components
+
+| Component | Address | Role |
+|---|---:|---|
+| Proxmox VE Node 1 | `192.168.1.47` | Cluster node |
+| Proxmox VE Node 2 | `192.168.1.48` | Cluster node |
+| Proxmox VE Node 3 | `192.168.1.49` | Cluster node |
+| TrueNAS | `192.168.10.76` | Shared storage |
+
+## Logical topology
 
 ```mermaid
 flowchart TD
-
     LAN[Management Network]
-
     PVE1[Proxmox VE Node 1]
     PVE2[Proxmox VE Node 2]
     PVE3[Proxmox VE Node 3]
-
     STORAGE[TrueNAS Shared Storage]
-
-    VM[Virtual Machines / Containers]
 
     LAN --> PVE1
     LAN --> PVE2
@@ -28,112 +34,58 @@ flowchart TD
     PVE1 <--> STORAGE
     PVE2 <--> STORAGE
     PVE3 <--> STORAGE
-
-    PVE1 --> VM
-    PVE2 --> VM
-    PVE3 --> VM
 ```
 
-## Components
+## Cluster layer
 
-### Proxmox VE Cluster
+The three Proxmox VE hosts participate in the same cluster. This provides centralized management and enables cluster-aware operations such as migration and High Availability.
 
-The virtualization layer consists of three Proxmox VE nodes configured as a single cluster.
+Corosync is used for cluster communication and membership. Quorum helps prevent unsafe decisions when nodes cannot all communicate with one another.
 
-The cluster allows centralized management of:
+## Storage layer
 
-* Virtual machines
-* Linux containers
-* Storage
-* Cluster resources
-* High Availability resources
+TrueNAS provides storage reachable by multiple Proxmox nodes. This matters because a VM disk on shared storage can remain available even when the workload moves to another physical host.
 
-### Shared Storage
-
-TrueNAS provides shared storage accessible by all Proxmox VE nodes.
-
-Shared storage allows virtual machine disks to remain accessible from multiple cluster nodes.
-
-This enables operations such as:
-
-* VM migration
-* Live migration
-* HA failover
-* Centralized storage management
+See [Shared Storage](shared-storage.md) for the practical migration implications.
 
 ## High Availability
 
-Selected virtual machines can be configured as High Availability resources.
+A VM was configured as an HA resource and tested by powering off the physical node on which it was running. The cluster detected the failure and restarted the VM on another available node.
 
-If a physical Proxmox VE node becomes unavailable, the cluster can restart the affected virtual machine on another available node.
+This is recovery, not seamless continuation of the failed host's RAM state.
 
-During testing, a VM was running on one Proxmox node when that physical node was powered off.
+See [High Availability Testing](high-availability.md).
 
-The cluster detected the failure and automatically restarted the VM on another available node.
+## Live migration
 
-This demonstrated that Proxmox HA provides automatic service recovery, but does not guarantee zero downtime after an unexpected physical node failure.
+When both source and destination hosts are healthy, a running VM can be migrated between nodes. With the VM disk already on shared storage, this avoids copying the whole disk as part of the migration.
 
-## Live Migration
+## Current network design
 
-When both Proxmox VE nodes are operational, a running virtual machine can be migrated between nodes.
+The current lab uses the management network for the Proxmox nodes. A future improvement is to separate traffic by purpose, for example:
 
-Live migration allows the VM to move between physical hosts while remaining operational.
+- Management
+- Cluster communication
+- Storage
+- VM / service traffic
 
-This is different from HA failover.
+That future state is documented as a roadmap item, not as something already implemented.
 
-During an unexpected host failure, the contents of the failed server's RAM are no longer available. The VM must therefore be restarted on another cluster node.
+## Validated scenarios
 
-## Network Design
+- [x] Three-node cluster
+- [x] Shared storage
+- [x] Manual migration
+- [x] Live migration
+- [x] HA resource configuration
+- [x] Physical node failure
+- [x] Automatic workload restart
+- [x] Node rejoin after failure
 
-The current lab uses a management network for communication between the Proxmox VE nodes.
+## Related documentation
 
-The current Proxmox management addresses are:
-
-| System            | Management IP |
-| ----------------- | ------------- |
-| Proxmox VE Node 1 | 192.168.1.47  |
-| Proxmox VE Node 2 | 192.168.1.48  |
-| Proxmox VE Node 3 | 192.168.1.49  |
-
-Shared storage is provided by:
-
-| System  | IP Address    |
-| ------- | ------------- |
-| TrueNAS | 192.168.10.76 |
-
-## Tests Performed
-
-The following tests have been performed in the lab:
-
-* Three-node Proxmox VE cluster creation
-* Shared storage configuration
-* Manual VM migration
-* Live VM migration
-* High Availability resource configuration
-* Physical node failure simulation
-* Automatic VM restart on another cluster node
-* Cluster recovery after node failure
-
-## Lessons Learned
-
-This lab demonstrated the practical difference between live migration and High Availability.
-
-Live migration is useful for moving a running VM between healthy physical hosts with minimal service interruption.
-
-High Availability instead protects against physical host failure by detecting the unavailable node and restarting the affected workload on another available cluster node.
-
-Shared storage plays an important role because the VM disks must remain accessible to the other nodes in the cluster.
-
-## Future Improvements
-
-Planned improvements include:
-
-* Dedicated storage network
-* Network segmentation
-* VLAN testing
-* Firewall isolation
-* Dedicated cluster communication network
-* Resource utilization monitoring
-* Zabbix monitoring and alerting
-* Backup and recovery testing
-* Infrastructure automation
+- [Cluster Setup](cluster-setup.md)
+- [Shared Storage](shared-storage.md)
+- [High Availability](high-availability.md)
+- [Troubleshooting](troubleshooting.md)
+- [Validation](validation.md)
