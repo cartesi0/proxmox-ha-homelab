@@ -31,6 +31,22 @@ The goal is to move beyond theory and document a working learning environment wi
 
 > Public documentation intentionally omits real IP addresses, hostnames, usernames, credentials, keys and public endpoints.
 
+## TrueNAS storage design
+
+The shared-storage side of the lab is also part of the learning project. My current TrueNAS configuration uses:
+
+- **3 disks in a ZFS RAIDZ1 vdev**
+- **1 additional disk configured as a spare**
+- a **dedicated dataset for Proxmox**
+- the dataset exported through **NFS**
+- the NFS export configured in Proxmox as **shared cluster storage**
+
+RAIDZ1 provides single-parity protection for the three-disk vdev. The spare is replacement capacity, not a second parity disk, so this layout should not be confused with RAIDZ2.
+
+This setup lets me practice ZFS concepts, NFS, shared virtualization storage, migration behavior and the relationship between storage availability and Proxmox HA.
+
+Detailed documentation: **[Shared Storage with TrueNAS](docs/shared-storage.md)**
+
 ## Workloads and services
 
 The cluster is also used as a multi-service homelab rather than only as an HA demonstration environment.
@@ -119,7 +135,9 @@ Full evidence: **[Cluster Validation](docs/validation.md)**
 ## What has been tested
 
 - [x] Three-node Proxmox VE cluster
-- [x] Shared storage available to the cluster
+- [x] Shared NFS storage available to the cluster
+- [x] TrueNAS dataset dedicated to Proxmox
+- [x] ZFS RAIDZ1 storage layout with separate spare documented
 - [x] Manual VM migration
 - [x] Live migration
 - [x] HA resource configuration
@@ -132,6 +150,7 @@ Full evidence: **[Cluster Validation](docs/validation.md)**
 - [x] Zabbix monitoring lab deployed
 - [x] pfSense VM prepared for networking experiments
 - [x] AWS EC2 and Security Groups hands-on practice
+- [ ] Controlled ZFS disk replacement test
 - [ ] Active Directory domain lab
 - [ ] Dedicated storage / cluster network testing
 - [ ] Extended monitoring and alerting
@@ -155,7 +174,7 @@ Full evidence: **[Cluster Validation](docs/validation.md)**
 | [Architecture](docs/architecture.md) | Components, topology and design choices |
 | [Workloads and Services](docs/workloads.md) | VM/LXC inventory, Pi-hole, VPN, monitoring and future AD lab |
 | [Cluster Setup](docs/cluster-setup.md) | Three-node cluster, Corosync and quorum |
-| [Shared Storage](docs/shared-storage.md) | Why shared storage matters for migration and HA |
+| [Shared Storage](docs/shared-storage.md) | TrueNAS RAIDZ1 + spare, dataset, NFS, migration and HA implications |
 | [High Availability](docs/high-availability.md) | Failure test, failover behavior and limitations |
 | [Troubleshooting](docs/troubleshooting.md) | Problems observed and how they were interpreted |
 | [Validation](docs/validation.md) | Sanitized output showing cluster, storage and HA state |
@@ -187,7 +206,8 @@ ha-manager status
 - Linux systems administration
 - Cluster concepts and quorum
 - Corosync basics
-- Shared storage concepts
+- ZFS RAIDZ1 and spare-disk concepts
+- TrueNAS datasets and NFS shared storage
 - VM migration and live migration
 - High Availability testing
 - DNS / Pi-hole administration
@@ -209,19 +229,18 @@ I use AI tools as a **study and documentation assistant** to help organize notes
 
 The public version of this project intentionally removes or generalizes operational details such as:
 
-- Public and operational IP addresses
+- IP addresses
 - Hostnames
 - Usernames
 - Passwords
-- SSH private or public keys
-- WireGuard private or public keys
-- API tokens and cloud access keys
+- Private or public SSH/WireGuard keys
+- API tokens
 - Cookies and session IDs
 - Public endpoints and account-specific identifiers
 
 ## Roadmap
 
-Planned improvements include Active Directory, dedicated network segmentation, Zabbix alerting, backup/recovery testing, additional HA scenarios, infrastructure automation, broader AWS practice and a future nested VMware/vCenter lab when hardware resources allow it.
+Planned improvements include Active Directory, dedicated network segmentation, Zabbix alerting, backup/recovery testing, a controlled ZFS replacement/resilver exercise, additional HA scenarios, infrastructure automation, broader AWS practice and a future nested VMware/vCenter lab when hardware resources allow it.
 
 ---
 
