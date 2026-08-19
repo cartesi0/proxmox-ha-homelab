@@ -3,7 +3,7 @@
 ![Proxmox VE](https://img.shields.io/badge/Proxmox_VE-3--Node_Cluster-E57000?logo=proxmox&logoColor=white)
 ![High Availability](https://img.shields.io/badge/High_Availability-Tested-success)
 ![Shared Storage](https://img.shields.io/badge/Shared_Storage-TrueNAS-0095D5?logo=truenas&logoColor=white)
-![Project](https://img.shields.io/badge/Project-Hands--on_Homelab-blue)
+![Validation](https://img.shields.io/badge/Real_Cluster_Evidence-Published-success)
 
 A hands-on three-node Proxmox VE homelab built to study clustering, shared storage, live migration, High Availability (HA), failure recovery and infrastructure troubleshooting.
 
@@ -24,6 +24,16 @@ The goal is to move beyond theory and document a working virtualization lab with
 | Proxmox VE Node 3 | `192.168.1.49` | Cluster node |
 | TrueNAS | `192.168.10.76` | Shared storage |
 
+## Real cluster snapshot
+
+The following status card is generated from sanitized command output collected from the running lab on **19 August 2026**.
+
+<p align="center">
+  <img src="assets/cluster-status.svg" alt="Real cluster validation snapshot" width="950">
+</p>
+
+Full evidence: **[Cluster Validation](docs/validation.md)**
+
 ## What has been tested
 
 - [x] Three-node Proxmox VE cluster
@@ -34,7 +44,7 @@ The goal is to move beyond theory and document a working virtualization lab with
 - [x] Physical node failure simulation
 - [x] Automatic VM restart on another node
 - [x] Cluster recovery after the failed node returned
-- [ ] Sanitized command-output validation evidence
+- [x] Sanitized command-output validation evidence
 - [ ] Dedicated storage / cluster network testing
 - [ ] Monitoring and alerting
 - [ ] Backup and restore validation
@@ -59,10 +69,22 @@ The goal is to move beyond theory and document a working virtualization lab with
 | [Shared Storage](docs/shared-storage.md) | Why shared storage matters for migration and HA |
 | [High Availability](docs/high-availability.md) | Failure test, failover behavior and limitations |
 | [Troubleshooting](docs/troubleshooting.md) | Problems observed and how they were interpreted |
-| [Validation](docs/validation.md) | Commands used to verify the real cluster state |
+| [Validation](docs/validation.md) | Real sanitized output proving cluster, storage and HA state |
 | [Config Examples](configs/examples/README.md) | Safe examples and rules for publishing configuration |
 
-## Useful validation commands
+## Validation highlights
+
+Real command output currently confirms:
+
+- Cluster name `labcluster`
+- 3 nodes / 3 votes / quorum present
+- TrueNAS NFS storage active
+- HA CRM active
+- Fencing armed and watchdog state visible
+- HA resource `vm:200` registered on `pve2`
+- Dynamic load CRS reported with 2.9% load imbalance at capture time
+
+Validation commands used:
 
 ```bash
 pvecm status
@@ -70,8 +92,6 @@ pvecm nodes
 pvesm status
 ha-manager status
 ```
-
-Real command output will only be published after it has been checked and sanitized. No passwords, tokens, private keys, cookies or other secrets belong in this repository.
 
 ## Skills demonstrated
 
@@ -83,6 +103,7 @@ Real command output will only be published after it has been checked and sanitiz
 - VM migration and live migration
 - High Availability testing
 - Failure analysis and troubleshooting
+- Validation from real command output
 - Technical documentation with Markdown and diagrams
 
 ## Roadmap
