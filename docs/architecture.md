@@ -2,7 +2,7 @@
 
 ## Overview
 
-The homelab is built around a three-node Proxmox VE cluster with shared storage provided by TrueNAS. The design is intentionally simple enough to understand while still exposing real virtualization concepts such as quorum, migration and HA recovery.
+The homelab is built around a three-node Proxmox VE cluster with shared storage provided by TrueNAS. The design is intentionally simple enough to understand while still exposing real virtualization concepts such as quorum, migration, shared storage and HA recovery.
 
 <p align="center">
   <img src="../assets/architecture-overview.svg" alt="Proxmox HA Homelab Architecture" width="900">
@@ -15,7 +15,7 @@ The homelab is built around a three-node Proxmox VE cluster with shared storage 
 | Proxmox VE Node A | Cluster node |
 | Proxmox VE Node B | Cluster node |
 | Proxmox VE Node C | Cluster node |
-| TrueNAS | Shared storage |
+| TrueNAS | Shared NFS storage |
 
 > Real IP addresses and hostnames are intentionally omitted from the public repository.
 
@@ -67,9 +67,21 @@ Corosync is used for cluster communication and membership. Quorum helps prevent 
 
 ## Storage layer
 
-TrueNAS provides storage reachable by multiple Proxmox nodes. This matters because a VM disk on shared storage can remain available even when the workload moves to another physical host.
+TrueNAS provides storage reachable by multiple Proxmox nodes.
 
-See [Shared Storage](shared-storage.md) for the practical migration implications.
+The storage design currently uses:
+
+- **3 disks in a ZFS RAIDZ1 vdev**
+- **1 additional disk configured as a spare**
+- a **dedicated dataset for Proxmox**
+- an **NFS share** exported from that dataset
+- Proxmox configured to use that NFS export as **shared cluster storage**
+
+This matters because a VM disk on shared storage can remain available even when the workload moves to another physical host.
+
+RAIDZ1 provides single-parity protection for the three-disk vdev. The separate spare is available as replacement capacity; it is not a second parity disk and does not make the layout equivalent to RAIDZ2.
+
+See [Shared Storage](shared-storage.md) for the detailed storage design and migration implications.
 
 ## Remote access layer
 
@@ -141,7 +153,9 @@ Planned work includes Active Directory Domain Services, users and groups, Organi
 ## Validated scenarios
 
 - [x] Three-node cluster
-- [x] Shared storage
+- [x] Shared NFS storage
+- [x] TrueNAS dataset dedicated to Proxmox
+- [x] ZFS RAIDZ1 layout with separate spare documented
 - [x] Manual migration
 - [x] Live migration
 - [x] HA resource configuration
@@ -152,6 +166,7 @@ Planned work includes Active Directory Domain Services, users and groups, Organi
 - [x] WireGuard remote-access service deployed
 - [x] Zabbix monitoring workload deployed
 - [x] AWS EC2 and Security Groups practice
+- [ ] Controlled storage-disk replacement test
 - [ ] Active Directory domain environment
 - [ ] Segmented network architecture
 
