@@ -6,16 +6,16 @@ This lab uses three Proxmox VE hosts in a single cluster to study centralized ma
 
 ## Nodes
 
-| Node | Management IP | Role |
-|---|---|---|
-| Proxmox Node 1 | `192.168.1.47` | Cluster node |
-| Proxmox Node 2 | `192.168.1.48` | Cluster node |
-| Proxmox Node 3 | `192.168.1.49` | Cluster node |
+| Node | Role |
+|---|---|
+| Proxmox Node A | Cluster node |
+| Proxmox Node B | Cluster node |
+| Proxmox Node C | Cluster node |
 
-The real validation snapshot captured on 19 August 2026 reports the cluster name as `labcluster`, with all three nodes visible and quorum present.
+The real validation snapshot captured on 19 August 2026 reports all three nodes visible and quorum present. Real hostnames and IP addresses are intentionally removed from the public documentation.
 
 <p align="center">
-  <img src="../assets/cluster-status.svg" alt="Real cluster status" width="950">
+  <img src="../assets/cluster-status.svg" alt="Sanitized cluster status" width="950">
 </p>
 
 ## Cluster communication
@@ -61,7 +61,7 @@ TrueNAS provides the shared storage used by the lab.
 pvesm status
 ```
 
-In the real captured output, the `truenas` NFS storage is reported as **active** with 10.37% of its reported capacity in use.
+In the real captured output, the TrueNAS NFS storage is reported as **active**.
 
 Shared VM disks allow migrations between nodes without copying the entire virtual disk each time.
 
@@ -123,7 +123,7 @@ ha-manager status
 - [x] Physical node failure simulated
 - [x] Automatic VM restart verified
 - [x] Failed node returned to cluster
-- [x] Real cluster/quorum/storage/HA output published
+- [x] Sanitized cluster/quorum/storage/HA output published
 
 ## Real evidence
 
@@ -136,4 +136,4 @@ pvesm status
 ha-manager status
 ```
 
-The snapshot proves the three-node membership, quorum, active TrueNAS NFS storage, HA CRM state, fencing/watchdog state and the registered HA resource at capture time.
+The public snapshot proves the three-node membership, quorum, active TrueNAS NFS storage, HA CRM state, fencing/watchdog state and the registered HA resource while omitting IP addresses, hostnames, usernames and credentials.
