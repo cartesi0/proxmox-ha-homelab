@@ -10,21 +10,23 @@ The homelab is built around a three-node Proxmox VE cluster with shared storage 
 
 ## Components
 
-| Component | Address | Role |
-|---|---:|---|
-| Proxmox VE Node 1 | `192.168.1.47` | Cluster node |
-| Proxmox VE Node 2 | `192.168.1.48` | Cluster node |
-| Proxmox VE Node 3 | `192.168.1.49` | Cluster node |
-| TrueNAS | `192.168.10.76` | Shared storage |
+| Component | Role |
+|---|---|
+| Proxmox VE Node A | Cluster node |
+| Proxmox VE Node B | Cluster node |
+| Proxmox VE Node C | Cluster node |
+| TrueNAS | Shared storage |
+
+> Real IP addresses and hostnames are intentionally omitted from the public repository.
 
 ## Logical topology
 
 ```mermaid
 flowchart TD
     LAN[Management Network]
-    PVE1[Proxmox VE Node 1]
-    PVE2[Proxmox VE Node 2]
-    PVE3[Proxmox VE Node 3]
+    PVE1[Proxmox VE Node A]
+    PVE2[Proxmox VE Node B]
+    PVE3[Proxmox VE Node C]
     STORAGE[TrueNAS Shared Storage]
 
     LAN --> PVE1
@@ -103,7 +105,7 @@ When both source and destination hosts are healthy, a running VM can be migrated
 
 ## Current network design
 
-The current lab uses the management network for the Proxmox nodes. A future improvement is to separate traffic by purpose, for example:
+The current lab uses a management network for the Proxmox nodes. A future improvement is to separate traffic by purpose, for example:
 
 - Management
 - Cluster communication
@@ -111,6 +113,10 @@ The current lab uses the management network for the Proxmox nodes. A future impr
 - VM / service traffic
 
 That future state is documented as a roadmap item, not as something already implemented.
+
+## Cloud practice
+
+Separate from the local homelab, I also have hands-on experience with **AWS EC2** and **Security Groups**, including running Linux workloads and controlling inbound/outbound access rules.
 
 ## Upcoming Windows infrastructure layer
 
@@ -145,6 +151,7 @@ Planned work includes Active Directory Domain Services, users and groups, Organi
 - [x] Pi-hole service deployed
 - [x] WireGuard remote-access service deployed
 - [x] Zabbix monitoring workload deployed
+- [x] AWS EC2 and Security Groups practice
 - [ ] Active Directory domain environment
 - [ ] Segmented network architecture
 
