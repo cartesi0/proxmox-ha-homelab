@@ -12,13 +12,29 @@ This lab uses three Proxmox VE hosts in a single cluster to study centralized ma
 | Proxmox Node 2 | `192.168.1.48` | Cluster node |
 | Proxmox Node 3 | `192.168.1.49` | Cluster node |
 
+The real validation snapshot captured on 19 August 2026 reports the cluster name as `labcluster`, with all three nodes visible and quorum present.
+
+<p align="center">
+  <img src="../assets/cluster-status.svg" alt="Real cluster status" width="950">
+</p>
+
 ## Cluster communication
 
 Proxmox VE uses Corosync for cluster membership and messaging. Reliable node-to-node connectivity is essential because quorum and HA decisions depend on the cluster having a consistent view of which nodes are available.
 
+The captured cluster output reports:
+
+- Transport: `knet`
+- Secure authentication: `on`
+- Nodes: `3`
+- Expected votes: `3`
+- Total votes: `3`
+- Quorum: `2`
+- Quorate: `Yes`
+
 ## Quorum
 
-With three voting nodes, the cluster normally requires two votes to remain quorate. This makes the lab useful for testing the difference between losing one node and losing too many votes to safely operate.
+With three voting nodes, the captured cluster state shows a quorum threshold of two votes. This makes the lab useful for testing the difference between losing one node and losing too many votes to safely operate.
 
 ```bash
 pvecm status
@@ -44,6 +60,8 @@ TrueNAS provides the shared storage used by the lab.
 ```bash
 pvesm status
 ```
+
+In the real captured output, the `truenas` NFS storage is reported as **active** with 10.37% of its reported capacity in use.
 
 Shared VM disks allow migrations between nodes without copying the entire virtual disk each time.
 
@@ -105,10 +123,11 @@ ha-manager status
 - [x] Physical node failure simulated
 - [x] Automatic VM restart verified
 - [x] Failed node returned to cluster
+- [x] Real cluster/quorum/storage/HA output published
 
-## Next validation step
+## Real evidence
 
-The repository will later include sanitized real output from:
+The sanitized command output is published in **[Cluster Validation](validation.md)** and includes:
 
 ```bash
 pvecm status
@@ -117,4 +136,4 @@ pvesm status
 ha-manager status
 ```
 
-Only output that has been reviewed for secrets or unnecessary internal details will be published.
+The snapshot proves the three-node membership, quorum, active TrueNAS NFS storage, HA CRM state, fencing/watchdog state and the registered HA resource at capture time.
