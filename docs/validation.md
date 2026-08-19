@@ -1,16 +1,19 @@
 # Cluster Validation
 
-This page contains **real, sanitized evidence captured from the running homelab**.
+This page contains **real evidence captured from the running homelab and sanitized before publication**.
 
 <p align="center">
-  <img src="../assets/cluster-status.svg" alt="Real Proxmox cluster validation snapshot" width="950">
+  <img src="../assets/cluster-status.svg" alt="Sanitized Proxmox cluster validation snapshot" width="950">
 </p>
+
+## Privacy note
+
+Operational identifiers that are not needed to demonstrate the technical result have been removed or generalized. Values inside angle brackets are deliberate placeholders.
 
 ## Capture snapshot
 
 - Capture date: **19 August 2026**
-- Kernel reported by the node: `7.0.14-12-pve`
-- Cluster name: `labcluster`
+- Platform: Proxmox VE / Linux
 - Corosync transport: `knet`
 - Secure authentication: enabled
 
@@ -22,23 +25,19 @@ Command:
 pvecm status
 ```
 
-Real output:
+Sanitized excerpt from the real output:
 
 ```text
 Cluster information
 -------------------
-Name:             labcluster
+Name:             <LAB_CLUSTER>
 Config Version:   3
 Transport:        knet
 Secure auth:      on
 
 Quorum information
 ------------------
-Date:             Wed Aug 19 17:22:53 2026
-Quorum provider:  corosync_votequorum
 Nodes:            3
-Node ID:          0x00000001
-Ring ID:          1.685
 Quorate:          Yes
 
 Votequorum information
@@ -51,10 +50,9 @@ Flags:            Quorate
 
 Membership information
 ----------------------
-    Nodeid      Votes Name
-0x00000001          1 192.168.1.47 (local)
-0x00000002          1 192.168.1.48
-0x00000003          1 192.168.1.49
+Node A             1 vote
+Node B             1 vote
+Node C             1 vote
 ```
 
 ### Result
@@ -69,15 +67,14 @@ Command:
 pvecm nodes
 ```
 
-Real output:
+Sanitized excerpt:
 
 ```text
 Membership information
 ----------------------
-    Nodeid      Votes Name
-         1          1 proxmox (local)
-         2          1 pve2
-         3          1 pve3
+Node A    1 vote
+Node B    1 vote
+Node C    1 vote
 ```
 
 ### Result
@@ -92,18 +89,18 @@ Command:
 pvesm status
 ```
 
-Real output:
+Sanitized excerpt:
 
 ```text
-Name             Type     Status     Total (KiB)      Used (KiB) Available (KiB)        %
-local             dir     active        67169672        48329328        15382504   71.95%
-local-lvm     lvmthin     active       153374720       109233475        44141244   71.22%
-truenas           nfs     active       934724608        96884736       837839872   10.37%
+Name            Type      Status
+local           dir       active
+local-lvm       lvmthin   active
+truenas         nfs       active
 ```
 
 ### Result
 
-The `truenas` NFS storage was **active** and visible from Proxmox. At capture time it used **10.37%** of the reported capacity.
+The TrueNAS NFS storage was **active** and visible from Proxmox at capture time.
 
 ## 4. HA manager status
 
@@ -113,16 +110,16 @@ Command:
 ha-manager status
 ```
 
-Real output:
+Sanitized excerpt:
 
 ```text
 quorum OK
-master proxmox (active, Wed Aug 19 17:22:51 2026) - dynamic load CRS (load imbalance: 2.9%)
+master <NODE_A> (active) - dynamic load CRS (load imbalance: 2.9%)
 fencing armed (CRM watchdog active)
-lrm proxmox (idle, watchdog standby, Wed Aug 19 17:22:54 2026)
-lrm pve2 (active, watchdog active, Wed Aug 19 17:22:55 2026)
-lrm pve3 (idle, watchdog standby, Wed Aug 19 17:22:52 2026)
-service vm:200 (pve2, stopped)
+lrm <NODE_A> (...)
+lrm <NODE_B> (...)
+lrm <NODE_C> (...)
+service <HA_VM> (<NODE_B>, stopped)
 ```
 
 ### Result
@@ -130,13 +127,12 @@ service vm:200 (pve2, stopped)
 At capture time:
 
 - HA reported `quorum OK`.
-- `proxmox` was the active HA CRM master.
+- An HA CRM master was active.
 - Fencing was armed and the CRM watchdog was active.
 - The HA manager reported `dynamic load CRS` with a **2.9% load imbalance**.
-- `pve2` had an active LRM watchdog.
-- HA service `vm:200` was registered on `pve2` and was **stopped** at the moment of capture.
+- The HA resource was registered and was **stopped** at the moment of capture.
 
-The last point is important: this snapshot proves the HA resource exists, but it does **not** claim that VM 200 was running at the time this evidence was collected.
+This snapshot proves the HA resource exists, but it does **not** claim that the HA VM was running at the time this evidence was collected.
 
 ## What this evidence validates
 
@@ -150,8 +146,6 @@ The last point is important: this snapshot proves the HA resource exists, but it
 - [x] HA resource registered
 - [x] Dynamic load CRS status visible
 
-## Security note
+## Publication rule
 
-The output above was reviewed before publication. No passwords, API tokens, private keys, cookies or public credentials are included.
-
-The RFC1918 addresses shown are private lab addresses used to make the topology understandable.
+Only technical details needed to explain the lab result are kept in the public version. Network and account-specific identifiers are generalized.
