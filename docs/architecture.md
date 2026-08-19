@@ -36,6 +36,27 @@ flowchart TD
     PVE3 <--> STORAGE
 ```
 
+## Workload layer
+
+The Proxmox cluster hosts a mix of Linux containers, virtual machines, infrastructure services and test workloads.
+
+<p align="center">
+  <img src="../assets/workloads-overview.svg" alt="Proxmox workload overview" width="1000">
+</p>
+
+Important services include:
+
+- `pihole-ct` for DNS filtering and DNS administration practice
+- `VPNWireguard` for secure remote access to the homelab
+- `Zabbix` for infrastructure monitoring
+- `pfsense` for firewall and segmentation experiments
+- `telegram-corner` for Linux-hosted Python / Telegram automation
+- `n8n` for workflow automation experiments
+- `ha-test` as a dedicated HA validation VM
+- `WinServer` and `Windows10client` for the upcoming Microsoft Active Directory lab
+
+The full inventory is documented in [Workloads and Services](workloads.md).
+
 ## Cluster layer
 
 The three Proxmox VE hosts participate in the same cluster. This provides centralized management and enables cluster-aware operations such as migration and High Availability.
@@ -47,6 +68,26 @@ Corosync is used for cluster communication and membership. Quorum helps prevent 
 TrueNAS provides storage reachable by multiple Proxmox nodes. This matters because a VM disk on shared storage can remain available even when the workload moves to another physical host.
 
 See [Shared Storage](shared-storage.md) for the practical migration implications.
+
+## Remote access layer
+
+The `VPNWireguard` container is used to access the homelab remotely.
+
+The design goal is to administer internal systems through an encrypted VPN rather than exposing the Proxmox management interface directly to the public Internet.
+
+This part of the lab covers:
+
+- WireGuard peer configuration
+- Linux routing
+- Remote access
+- Firewall policy
+- Network isolation and security boundaries
+
+## Monitoring layer
+
+The `Zabbix` VM is used to practice infrastructure monitoring. The monitoring roadmap includes Proxmox nodes, Linux hosts, service availability, storage usage and alerting.
+
+Pi-hole also provides a practical DNS service that can be monitored as part of the same environment.
 
 ## High Availability
 
@@ -71,6 +112,26 @@ The current lab uses the management network for the Proxmox nodes. A future impr
 
 That future state is documented as a roadmap item, not as something already implemented.
 
+## Upcoming Windows infrastructure layer
+
+The next major project is a Windows domain lab based on `WinServer` and `Windows10client`.
+
+```mermaid
+flowchart LR
+    SERVER[WinServer]
+    AD[Active Directory Domain Services]
+    DNS[AD DNS]
+    GPO[Group Policy]
+    CLIENT[Windows10client]
+
+    SERVER --> AD
+    SERVER --> DNS
+    AD --> GPO
+    CLIENT -->|Domain Join| AD
+```
+
+Planned work includes Active Directory Domain Services, users and groups, Organizational Units, Group Policy, DNS, domain join, permissions, shared folders, replication and monitoring.
+
 ## Validated scenarios
 
 - [x] Three-node cluster
@@ -81,9 +142,15 @@ That future state is documented as a roadmap item, not as something already impl
 - [x] Physical node failure
 - [x] Automatic workload restart
 - [x] Node rejoin after failure
+- [x] Pi-hole service deployed
+- [x] WireGuard remote-access service deployed
+- [x] Zabbix monitoring workload deployed
+- [ ] Active Directory domain environment
+- [ ] Segmented network architecture
 
 ## Related documentation
 
+- [Workloads and Services](workloads.md)
 - [Cluster Setup](cluster-setup.md)
 - [Shared Storage](shared-storage.md)
 - [High Availability](high-availability.md)
