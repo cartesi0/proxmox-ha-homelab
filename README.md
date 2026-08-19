@@ -203,4 +203,4 @@ Planned improvements include Active Directory, dedicated network segmentation, Z
 
 ---
 
-> This is a personal learning homelab. It is not presented as production infrastructure or as evidence of senior-level expertise; it documents my practical learning process and hands-on experiments.
+> This is a personal learning homelab that documents my practical learning process and hands-on experiments.
