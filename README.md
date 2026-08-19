@@ -3,7 +3,7 @@
 ![Proxmox VE](https://img.shields.io/badge/Proxmox_VE-3--Node_Cluster-E57000?logo=proxmox&logoColor=white)
 ![High Availability](https://img.shields.io/badge/High_Availability-Tested-success)
 ![Shared Storage](https://img.shields.io/badge/Shared_Storage-TrueNAS-0095D5?logo=truenas&logoColor=white)
-![Validation](https://img.shields.io/badge/Real_Cluster_Evidence-Published-success)
+![Validation](https://img.shields.io/badge/Real_Cluster_Evidence-Sanitized-success)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Consolato_Malara-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/consolatomalara/)
 
 **Author:** Consolato Malara  
@@ -21,12 +21,14 @@ The goal is to move beyond theory and document a working learning environment wi
 
 ## Current lab
 
-| Component | Address | Purpose |
-|---|---:|---|
-| Proxmox VE Node 1 | `192.168.1.47` | Cluster node |
-| Proxmox VE Node 2 | `192.168.1.48` | Cluster node |
-| Proxmox VE Node 3 | `192.168.1.49` | Cluster node |
-| TrueNAS | `192.168.10.76` | Shared NFS storage |
+| Component | Purpose |
+|---|---|
+| Proxmox VE Node A | Cluster node |
+| Proxmox VE Node B | Cluster node |
+| Proxmox VE Node C | Cluster node |
+| TrueNAS | Shared NFS storage |
+
+> Public documentation intentionally omits real IP addresses, hostnames, usernames and credentials.
 
 ## Workloads and services
 
@@ -38,21 +40,19 @@ The cluster is also used as a multi-service homelab rather than only as an HA de
 
 Current workloads include:
 
-| ID | Workload | Main purpose |
-|---:|---|---|
-| 107 | `n8n` | Workflow automation lab |
-| 108 | `pihole-ct` | DNS filtering with Pi-hole |
-| 110 | `telegram-corner` | Telegram / Python automation workload |
-| 111 | `VPNWireguard` | WireGuard-based remote access to the homelab |
-| 101 | `pfsense` | Firewall and network segmentation lab |
-| 102 | `Homelab` | General-purpose testing |
-| 103 | `Fatture` | Existing application workload |
-| 104 | `Windows10client` | Windows client and future domain-join testing |
-| 105 | `SMM` | Existing application workload |
-| 106 | `Zabbix` | Infrastructure monitoring lab |
-| 109 | `Ubuntu` | Linux testing VM |
-| 100 | `WinServer` | Windows Server / next Active Directory project |
-| 200 | `ha-test` | Dedicated HA and failover validation VM |
+| Workload | Main purpose |
+|---|---|
+| `n8n` | Workflow automation lab |
+| `pihole-ct` | DNS filtering with Pi-hole |
+| `telegram-corner` | Telegram / Python automation workload |
+| `VPNWireguard` | WireGuard-based remote access to the homelab |
+| `pfsense` | Firewall and network segmentation lab |
+| General-purpose Linux/Windows VMs | Testing and administration practice |
+| `Windows10client` | Windows client and future domain-join testing |
+| `Zabbix` | Infrastructure monitoring lab |
+| `Ubuntu` | Linux testing VM |
+| `WinServer` | Windows Server / next Active Directory project |
+| `ha-test` | Dedicated HA and failover validation VM |
 
 Full workload documentation: **[Workloads and Services](docs/workloads.md)**
 
@@ -67,6 +67,12 @@ Full workload documentation: **[Workloads and Services](docs/workloads.md)**
 **pfSense** — used for networking, firewall and segmentation experiments.
 
 **n8n / Telegram automation** — Linux-hosted automation workloads used to practice application deployment and service troubleshooting.
+
+## Additional cloud experience: AWS EC2
+
+Alongside the on-premises homelab, I have hands-on experience with **Amazon EC2** for running Linux workloads and with **AWS Security Groups** for controlling inbound and outbound network access.
+
+This is part of my Infrastructure and Cloud learning path and complements the networking and Linux administration work documented in this repository.
 
 ## Next major project: Windows Server + Active Directory
 
@@ -101,10 +107,10 @@ Planned milestones:
 
 ## Real cluster snapshot
 
-The following status card is generated from sanitized command output collected from the running lab on **19 August 2026**.
+The following status card is based on **sanitized command output** collected from the running lab on **19 August 2026**.
 
 <p align="center">
-  <img src="assets/cluster-status.svg" alt="Real cluster validation snapshot" width="950">
+  <img src="assets/cluster-status.svg" alt="Sanitized cluster validation snapshot" width="950">
 </p>
 
 Full evidence: **[Cluster Validation](docs/validation.md)**
@@ -124,6 +130,7 @@ Full evidence: **[Cluster Validation](docs/validation.md)**
 - [x] WireGuard remote-access service deployed
 - [x] Zabbix monitoring lab deployed
 - [x] pfSense VM prepared for networking experiments
+- [x] AWS EC2 and Security Groups hands-on practice
 - [ ] Active Directory domain lab
 - [ ] Dedicated storage / cluster network testing
 - [ ] Extended monitoring and alerting
@@ -150,19 +157,18 @@ Full evidence: **[Cluster Validation](docs/validation.md)**
 | [Shared Storage](docs/shared-storage.md) | Why shared storage matters for migration and HA |
 | [High Availability](docs/high-availability.md) | Failure test, failover behavior and limitations |
 | [Troubleshooting](docs/troubleshooting.md) | Problems observed and how they were interpreted |
-| [Validation](docs/validation.md) | Real sanitized output showing cluster, storage and HA state |
+| [Validation](docs/validation.md) | Sanitized output showing cluster, storage and HA state |
 | [Config Examples](configs/examples/README.md) | Safe examples and rules for publishing configuration |
 
 ## Validation highlights
 
-Real command output currently confirms:
+Sanitized command output currently confirms:
 
-- Cluster name `labcluster`
 - 3 nodes / 3 votes / quorum present
 - TrueNAS NFS storage active
 - HA CRM active
 - Fencing armed and watchdog state visible
-- HA resource `vm:200` registered on `pve2` and stopped at capture time
+- HA resource registered
 - `ha-manager status` reported `dynamic load CRS` with 2.9% load imbalance at capture time
 
 Validation commands used:
@@ -187,6 +193,7 @@ ha-manager status
 - WireGuard VPN and remote access
 - Firewall and network-lab concepts
 - Zabbix monitoring
+- AWS EC2 and Security Groups
 - Linux application hosting and automation
 - Windows client/server fundamentals
 - Failure analysis and troubleshooting
@@ -197,9 +204,22 @@ ha-manager status
 
 I use AI tools as a **study and documentation assistant** to help organize notes, review explanations and improve the clarity of the Markdown documentation. The lab configurations, tests and command outputs shown here come from my own environment. I try to keep only material that I can explain and reproduce during my learning process.
 
+## Security and privacy note
+
+The public version of this project intentionally removes or generalizes operational details such as:
+
+- IP addresses
+- Hostnames
+- Usernames
+- Passwords
+- Private keys
+- API tokens
+- Cookies and session IDs
+- Public endpoints and account-specific identifiers
+
 ## Roadmap
 
-Planned improvements include Active Directory, dedicated network segmentation, Zabbix alerting, backup/recovery testing, additional HA scenarios, infrastructure automation and a future nested VMware/vCenter lab when hardware resources allow it.
+Planned improvements include Active Directory, dedicated network segmentation, Zabbix alerting, backup/recovery testing, additional HA scenarios, infrastructure automation, broader AWS practice and a future nested VMware/vCenter lab when hardware resources allow it.
 
 ---
 
