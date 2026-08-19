@@ -17,11 +17,13 @@ Shared storage is important for this homelab because it supports:
 - HA recovery, because another node can access the same VM disk
 - Centralized storage management
 
-## Current endpoint
+## Current setup
 
-| System | Address | Purpose |
-|---|---:|---|
-| TrueNAS | `192.168.10.76` | Shared VM storage |
+| System | Purpose |
+|---|---|
+| TrueNAS | Shared NFS storage for the Proxmox lab |
+
+The real storage endpoint and network addressing are intentionally omitted from the public repository.
 
 ## Practical observation
 
@@ -37,7 +39,7 @@ From a Proxmox node:
 pvesm status
 ```
 
-Additional checks depend on the storage protocol in use and will be documented only after they are verified in the live lab.
+The sanitized validation snapshot confirms that the TrueNAS NFS storage was active at capture time.
 
 ## Design considerations
 
@@ -45,4 +47,11 @@ The current lab is intentionally simple. Future improvements may include a dedic
 
 ## Security note
 
-No credentials, authentication secrets, private keys or sensitive storage configuration should be committed to this public repository.
+The public repository does not include:
+
+- Storage IP addresses
+- Export paths that are not needed for explanation
+- Usernames or passwords
+- Authentication secrets
+- Private keys
+- Sensitive storage configuration
