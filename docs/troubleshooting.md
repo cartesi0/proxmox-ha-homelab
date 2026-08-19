@@ -74,4 +74,4 @@ When adding a troubleshooting case, record:
 5. Fix or next test
 6. Lesson learned
 
-Avoid publishing secrets, private keys, tokens or credentials in command output.
+Before publishing command output, generalize network addresses, node identifiers and account-specific values. Only keep details that are necessary to explain the technical result.
