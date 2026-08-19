@@ -31,6 +31,36 @@ This distinction matters in production infrastructure:
 
 HA reduces recovery effort and service outage, but it does not guarantee uninterrupted execution after a sudden physical failure.
 
+## Real HA runtime snapshot
+
+A later validation capture from the running lab returned:
+
+```text
+quorum OK
+master proxmox (active, Wed Aug 19 17:22:51 2026) - dynamic load CRS (load imbalance: 2.9%)
+fencing armed (CRM watchdog active)
+lrm proxmox (idle, watchdog standby, Wed Aug 19 17:22:54 2026)
+lrm pve2 (active, watchdog active, Wed Aug 19 17:22:55 2026)
+lrm pve3 (idle, watchdog standby, Wed Aug 19 17:22:52 2026)
+service vm:200 (pve2, stopped)
+```
+
+This capture shows that, at that moment:
+
+- Quorum was healthy.
+- `proxmox` was the active CRM master.
+- Fencing was armed.
+- CRM watchdog was active.
+- `pve2` had the active LRM watchdog.
+- The scheduler reported `dynamic load CRS` with a 2.9% load imbalance.
+- HA service `vm:200` was registered on `pve2`, but the VM itself was **stopped** at capture time.
+
+<p align="center">
+  <img src="../assets/cluster-status.svg" alt="Real HA and cluster runtime status" width="950">
+</p>
+
+The complete sanitized evidence is available in **[Cluster Validation](validation.md)**.
+
 ## What happens when the failed node returns?
 
 When the failed Proxmox host comes back online, it rejoins the cluster. The VM that was recovered on another node does not automatically need to move back to its original host. Workload placement can be changed later through migration or HA policy decisions.
@@ -50,4 +80,4 @@ pvecm nodes
 - Service recovery timing
 - Behavior during storage unavailability
 - Backup and restore recovery
-- Resource utilization monitoring before migration decisions
+- Resource utilization monitoring and scheduler behavior with multiple running workloads
