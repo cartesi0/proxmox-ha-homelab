@@ -7,7 +7,8 @@
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Consolato_Malara-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/consolatomalara/)
 
 **Author:** Consolato Malara  
-**Professional profile:** [LinkedIn](https://www.linkedin.com/in/consolatomalara/)
+**Professional profile:** [LinkedIn](https://www.linkedin.com/in/consolatomalara/)  
+**Italian version:** [proxmox-ha-homelab-ita](https://github.com/cartesi0/proxmox-ha-homelab-ita)
 
 A personal three-node Proxmox VE homelab used to learn and practice clustering, shared storage, live migration, High Availability (HA), Linux services, networking, monitoring, automation and Windows infrastructure.
 
@@ -28,7 +29,7 @@ The goal is to move beyond theory and document a working learning environment wi
 | Proxmox VE Node C | Cluster node |
 | TrueNAS | Shared NFS storage |
 
-> Public documentation intentionally omits real IP addresses, hostnames, usernames and credentials.
+> Public documentation intentionally omits real IP addresses, hostnames, usernames, credentials, keys and public endpoints.
 
 ## Workloads and services
 
@@ -208,12 +209,13 @@ I use AI tools as a **study and documentation assistant** to help organize notes
 
 The public version of this project intentionally removes or generalizes operational details such as:
 
-- IP addresses
+- Public and operational IP addresses
 - Hostnames
 - Usernames
 - Passwords
-- Private keys
-- API tokens
+- SSH private or public keys
+- WireGuard private or public keys
+- API tokens and cloud access keys
 - Cookies and session IDs
 - Public endpoints and account-specific identifiers
 
