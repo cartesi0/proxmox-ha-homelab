@@ -1,107 +1,94 @@
 # Proxmox VE High Availability Homelab
 
-A three-node Proxmox VE homelab built to study and test virtualization,
-shared storage, live migration and high availability.
+![Proxmox VE](https://img.shields.io/badge/Proxmox_VE-3--Node_Cluster-E57000?logo=proxmox&logoColor=white)
+![High Availability](https://img.shields.io/badge/High_Availability-Tested-success)
+![Shared Storage](https://img.shields.io/badge/Shared_Storage-TrueNAS-0095D5?logo=truenas&logoColor=white)
+![Project](https://img.shields.io/badge/Project-Hands--on_Homelab-blue)
 
-## Project Goals
+A hands-on three-node Proxmox VE homelab built to study clustering, shared storage, live migration, High Availability (HA), failure recovery and infrastructure troubleshooting.
 
-The goal of this project is to gain hands-on experience with enterprise
-virtualization concepts using Proxmox VE.
+<p align="center">
+  <img src="assets/architecture-overview.svg" alt="Proxmox HA Homelab Architecture" width="900">
+</p>
 
-The lab focuses on:
+## Why this project exists
 
-- Proxmox VE clustering
-- High Availability (HA)
-- Shared storage
-- Live migration
-- VM failover
-- Infrastructure troubleshooting
-- Linux and networking administration
+The goal is to move beyond theory and document a working virtualization lab with repeatable tests and real failure scenarios. The repository is intentionally focused on what has actually been configured and tested.
 
-## Lab Architecture
+## Current lab
 
-The environment consists of three Proxmox VE nodes:
+| Component | Address | Purpose |
+|---|---:|---|
+| Proxmox VE Node 1 | `192.168.1.47` | Cluster node |
+| Proxmox VE Node 2 | `192.168.1.48` | Cluster node |
+| Proxmox VE Node 3 | `192.168.1.49` | Cluster node |
+| TrueNAS | `192.168.10.76` | Shared storage |
 
-| Node | Management IP |
-|------|---------------|
-| Proxmox Node 1 | 192.168.1.47 |
-| Proxmox Node 2 | 192.168.1.48 |
-| Proxmox Node 3 | 192.168.1.49 |
+## What has been tested
 
-Shared storage is provided by a TrueNAS server.
-
-| System | IP |
-|--------|----|
-| TrueNAS | 192.168.10.76 |
-
-## High Availability Test
-
-A virtual machine was configured as a Proxmox HA resource.
-
-The VM was initially running on one cluster node.
-
-To simulate a physical host failure, the node was powered off.
-
-The Proxmox cluster detected the unavailable node and automatically
-restarted the VM on another available node.
-
-This test demonstrated an important difference between:
-
-### Live Migration
-
-The VM is moved between active Proxmox nodes while it continues running.
-
-### HA Failover
-
-If a physical node suddenly fails, the VM cannot continue executing from
-the RAM of the failed server.
-
-Proxmox HA detects the failure and starts the VM on another available node.
-
-This means HA provides service recovery, but it does not mean zero downtime.
-
-## Tests Completed
-
-- [x] Three-node Proxmox cluster
-- [x] Shared storage configuration
+- [x] Three-node Proxmox VE cluster
+- [x] Shared storage available to the cluster
 - [x] Manual VM migration
 - [x] Live migration
 - [x] HA resource configuration
 - [x] Physical node failure simulation
 - [x] Automatic VM restart on another node
-- [ ] Resource balancing tests
-- [ ] Network segmentation
+- [x] Cluster recovery after the failed node returned
+- [ ] Sanitized command-output validation evidence
+- [ ] Dedicated storage / cluster network testing
 - [ ] Monitoring and alerting
+- [ ] Backup and restore validation
 - [ ] Infrastructure automation
+
+## Key lesson: Live Migration is not HA Failover
+
+**Live migration** moves a running VM between healthy hosts with minimal interruption.
+
+**HA failover** reacts to an unexpected host failure. Because the failed host's RAM state is gone, the workload must be restarted on another available node. HA provides automatic recovery, not zero downtime.
+
+<p align="center">
+  <img src="assets/ha-failover.svg" alt="Live Migration versus HA Failover" width="900">
+</p>
 
 ## Documentation
 
-Detailed documentation will be added to the `docs` directory.
+| Document | What it covers |
+|---|---|
+| [Architecture](docs/architecture.md) | Components, topology and design choices |
+| [Cluster Setup](docs/cluster-setup.md) | Three-node cluster, Corosync and quorum |
+| [Shared Storage](docs/shared-storage.md) | Why shared storage matters for migration and HA |
+| [High Availability](docs/high-availability.md) | Failure test, failover behavior and limitations |
+| [Troubleshooting](docs/troubleshooting.md) | Problems observed and how they were interpreted |
+| [Validation](docs/validation.md) | Commands used to verify the real cluster state |
+| [Config Examples](configs/examples/README.md) | Safe examples and rules for publishing configuration |
 
-Topics will include:
+## Useful validation commands
 
-- Cluster configuration
-- Storage configuration
-- High Availability
-- Live migration
-- Failure testing
-- Troubleshooting
+```bash
+pvecm status
+pvecm nodes
+pvesm status
+ha-manager status
+```
 
-## What I Learned
+Real command output will only be published after it has been checked and sanitized. No passwords, tokens, private keys, cookies or other secrets belong in this repository.
 
-This lab helped me understand the practical difference between VM migration
-and High Availability.
+## Skills demonstrated
 
-It also provided hands-on experience with cluster management, shared
-storage, failure scenarios and infrastructure troubleshooting.
+- Proxmox VE administration
+- Linux systems administration
+- Cluster concepts and quorum
+- Corosync awareness
+- Shared storage concepts
+- VM migration and live migration
+- High Availability testing
+- Failure analysis and troubleshooting
+- Technical documentation with Markdown and diagrams
 
-## Future Improvements
+## Roadmap
 
-Planned improvements include:
+Planned improvements include dedicated network segmentation, monitoring with Zabbix, backup/recovery testing, additional HA scenarios and infrastructure automation.
 
-- Resource balancing between nodes
-- Network segmentation
-- Monitoring with Zabbix
-- Infrastructure automation
-- Backup and recovery testing
-- Additional failure scenarios
+---
+
+> This is a personal learning homelab. The documentation reflects hands-on tests performed in the environment and will evolve as new scenarios are validated.
