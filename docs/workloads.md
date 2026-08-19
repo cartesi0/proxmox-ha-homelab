@@ -1,39 +1,39 @@
 # Workloads and Services
 
-This page documents the virtual machines and containers currently visible in the Proxmox VE homelab, together with the purpose of the services that are already part of the environment and the next planned projects.
+This page documents the virtual machines and containers currently used in the Proxmox VE homelab, together with the purpose of the services that are already part of the environment and the next planned projects.
 
 <p align="center">
   <img src="../assets/workloads-overview.svg" alt="Proxmox homelab workloads overview" width="1000">
 </p>
 
-> The inventory below is a point-in-time view of the lab. Runtime state can change as workloads are started, stopped, migrated or used for testing.
+> The inventory below is a point-in-time view of the lab. Runtime placement and power state can change during testing. Public documentation uses generic node labels and omits operational network identifiers.
 
 ## Current workload inventory
 
-### Node `proxmox`
+### Node A
 
-| ID | Name | Type | Role / purpose |
-|---:|---|---|---|
-| 107 | `n8n` | LXC container | Workflow automation lab |
-| 108 | `pihole-ct` | LXC container | DNS filtering / Pi-hole service |
-| 110 | `telegram-corner` | LXC container | Telegram automation / bot workload |
-| 111 | `VPNWireguard` | LXC container | WireGuard-based remote access to the homelab |
-| 101 | `pfsense` | Virtual machine | Firewall and network segmentation lab |
-| 102 | `Homelab` | Virtual machine | General-purpose lab workload |
-| 103 | `Fatture` | Virtual machine | Existing application workload; detailed role to be documented later |
-| 104 | `Windows10client` | Virtual machine | Windows client testing |
-| 105 | `SMM` | Virtual machine | Existing application workload; detailed role to be documented later |
-| 106 | `Zabbix` | Virtual machine | Infrastructure monitoring lab |
-| 109 | `Ubuntu` | Virtual machine | Linux testing / general-purpose lab workload |
+| Name | Type | Role / purpose |
+|---|---|---|
+| `n8n` | LXC container | Workflow automation lab |
+| `pihole-ct` | LXC container | DNS filtering / Pi-hole service |
+| `telegram-corner` | LXC container | Telegram automation / bot workload |
+| `VPNWireguard` | LXC container | WireGuard-based remote access to the homelab |
+| `pfsense` | Virtual machine | Firewall and network segmentation lab |
+| General-purpose lab VM | Virtual machine | General testing workload |
+| Application VM A | Virtual machine | Existing application workload |
+| `Windows10client` | Virtual machine | Windows client testing |
+| Application VM B | Virtual machine | Existing application workload |
+| `Zabbix` | Virtual machine | Infrastructure monitoring lab |
+| `Ubuntu` | Virtual machine | Linux testing / general-purpose lab workload |
 
-### Node `pve2`
+### Node B
 
-| ID | Name | Type | Role / purpose |
-|---:|---|---|---|
-| 100 | `WinServer` | Virtual machine | Windows Server lab; next milestone is Active Directory |
-| 200 | `ha-test` | Virtual machine | Dedicated Proxmox HA and failover test workload |
+| Name | Type | Role / purpose |
+|---|---|---|
+| `WinServer` | Virtual machine | Windows Server lab; next milestone is Active Directory |
+| `ha-test` | Virtual machine | Dedicated Proxmox HA and failover test workload |
 
-### Node `pve3`
+### Node C
 
 No permanent workload is being documented on this node at the moment. It remains available as a cluster member for migration, HA testing and future workload placement.
 
@@ -126,6 +126,10 @@ flowchart LR
 - [ ] Test backup and restore of Active Directory
 - [ ] Integrate Windows monitoring into Zabbix
 
+## Cloud practice
+
+I also have hands-on experience with **AWS EC2** and **Security Groups**. This includes running Linux workloads on EC2 and using Security Groups to control inbound and outbound access.
+
 ## Future projects
 
 Planned additions to the homelab include:
@@ -135,7 +139,8 @@ Planned additions to the homelab include:
 3. **Monitoring expansion** — Zabbix dashboards and alerting for cluster services.
 4. **Backup and disaster recovery** — restore testing for VMs and services.
 5. **Infrastructure automation fundamentals** — automation experiments after the underlying manual tasks are understood.
-6. **VMware nested lab** — future comparison with vSphere / vCenter concepts when hardware resources allow it.
+6. **AWS practice** — broader EC2, networking and cloud infrastructure exercises.
+7. **VMware nested lab** — future comparison with vSphere / vCenter concepts when hardware resources allow it.
 
 ## Why this inventory matters
 
