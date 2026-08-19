@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520">
+  <rect width="1200" height="520" fill="#0d1117"/>
+  <text x="600" y="52" text-anchor="middle" fill="#f0f6fc" font-family="Arial, sans-serif" font-size="30" font-weight="700">Live Migration vs HA Failover</text>
+
+  <text x="300" y="100" text-anchor="middle" fill="#58a6ff" font-family="Arial, sans-serif" font-size="22" font-weight="700">LIVE MIGRATION</text>
+  <rect x="70" y="130" rx="14" width="200" height="90" fill="#161b22" stroke="#e57000" stroke-width="3"/>
+  <text x="170" y="168" text-anchor="middle" fill="#f0f6fc" font-family="Arial" font-size="20" font-weight="700">Node A</text>
+  <text x="170" y="198" text-anchor="middle" fill="#2ea043" font-family="Arial" font-size="16">Healthy</text>
+  <rect x="330" y="130" rx="14" width="200" height="90" fill="#161b22" stroke="#e57000" stroke-width="3"/>
+  <text x="430" y="168" text-anchor="middle" fill="#f0f6fc" font-family="Arial" font-size="20" font-weight="700">Node B</text>
+  <text x="430" y="198" text-anchor="middle" fill="#2ea043" font-family="Arial" font-size="16">Healthy</text>
+  <line x1="270" y1="175" x2="330" y2="175" stroke="#58a6ff" stroke-width="4"/>
+  <polygon points="330,175 316,167 316,183" fill="#58a6ff"/>
+  <rect x="205" y="260" rx="12" width="190" height="70" fill="#1f6feb"/>
+  <text x="300" y="302" text-anchor="middle" fill="#fff" font-family="Arial" font-size="20" font-weight="700">VM keeps running</text>
+  <text x="300" y="372" text-anchor="middle" fill="#8b949e" font-family="Arial" font-size="16">Both hosts are alive while state moves.</text>
+
+  <line x1="600" y1="95" x2="600" y2="455" stroke="#30363d" stroke-width="2"/>
+
+  <text x="900" y="100" text-anchor="middle" fill="#f85149" font-family="Arial, sans-serif" font-size="22" font-weight="700">HA FAILOVER</text>
+  <rect x="670" y="130" rx="14" width="200" height="90" fill="#161b22" stroke="#f85149" stroke-width="3"/>
+  <text x="770" y="168" text-anchor="middle" fill="#f0f6fc" font-family="Arial" font-size="20" font-weight="700">Node A</text>
+  <text x="770" y="198" text-anchor="middle" fill="#f85149" font-family="Arial" font-size="16">FAILED</text>
+  <rect x="930" y="130" rx="14" width="200" height="90" fill="#161b22" stroke="#e57000" stroke-width="3"/>
+  <text x="1030" y="168" text-anchor="middle" fill="#f0f6fc" font-family="Arial" font-size="20" font-weight="700">Node B</text>
+  <text x="1030" y="198" text-anchor="middle" fill="#2ea043" font-family="Arial" font-size="16">Available</text>
+  <line x1="870" y1="175" x2="930" y2="175" stroke="#f85149" stroke-width="4" stroke-dasharray="8 7"/>
+  <polygon points="930,175 916,167 916,183" fill="#f85149"/>
+  <rect x="805" y="260" rx="12" width="190" height="70" fill="#238636"/>
+  <text x="900" y="288" text-anchor="middle" fill="#fff" font-family="Arial" font-size="18" font-weight="700">VM restarts</text>
+  <text x="900" y="313" text-anchor="middle" fill="#fff" font-family="Arial" font-size="18" font-weight="700">on another node</text>
+  <text x="900" y="372" text-anchor="middle" fill="#8b949e" font-family="Arial" font-size="16">Recovery is automatic, but not zero-downtime.</text>
+
+  <text x="600" y="485" text-anchor="middle" fill="#8b949e" font-family="Arial" font-size="15">Hands-on behavior observed in this Proxmox VE homelab</text>
+</svg>
